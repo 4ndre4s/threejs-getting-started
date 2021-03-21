@@ -27,31 +27,20 @@ export default {
     floor.name = 'floor'
     floor.rotation.x = Math.PI / 2
 
-    const backWall = this.generateWall(5, 20, 2, 1)
-    backWall.rotation.x = Math.PI / 2
-    backWall.rotation.y = Math.PI / 2
-    backWall.rotation.z = Math.PI / 2
+    const backWall = this.generateWall(5, 20, 2, 1, Math.PI, Math.PI / 2, Math.PI)
     backWall.position.x = -5
     backWall.position.z = -2.5
 
-    const windowWall = this.generateWindow(5, 20)
-    windowWall.rotation.x = Math.PI / 2
-    windowWall.rotation.y = Math.PI / 2
-    windowWall.rotation.z = Math.PI / 2
+    const windowWall = this.generateWall(5, 20, 3, 1, Math.PI / 2, Math.PI / 2, Math.PI / 2, '/img/glass.jpg', 0.3)
     windowWall.position.x = 5
     windowWall.position.z = -2.5
 
     const leftWall = this.generateWall(5, 10, 1, 1)
-    leftWall.rotation.x = Math.PI / 2
-    leftWall.rotation.z = Math.PI / 2
     leftWall.position.x = 0
     leftWall.position.y = 10
     leftWall.position.z = -2.5
 
     const rightWall = this.generateWall(5, 10, 1, 1)
-    rightWall.rotation.x = Math.PI / 2
-    rightWall.rotation.y = Math.PI
-    rightWall.rotation.z = Math.PI / 2
     rightWall.position.x = 0
     rightWall.position.y = -10
     rightWall.position.z = -2.5
@@ -118,8 +107,8 @@ export default {
       mesh.receiveShadow = true
       return mesh
     },
-    generateWall (width, depth, repeatX, repeatY) {
-      const texture = THREE.ImageUtils.loadTexture('/img/wall.jpg')
+    generateWall (width, depth, repeatX, repeatY, rotateX = Math.PI / 2, rotateY = Math.PI, rotateZ = Math.PI / 2, textureUrl = '/img/wall.jpg', opacity = 1) {
+      const texture = THREE.ImageUtils.loadTexture(textureUrl)
       texture.wrapS = THREE.RepeatWrapping
       texture.wrapT = THREE.RepeatWrapping
       texture.repeat.set(repeatX, repeatY)
@@ -132,28 +121,15 @@ export default {
           side: THREE.DoubleSide
         }
       )
-      const mesh = new THREE.Mesh(geometry, material)
-      mesh.receiveShadow = true
-      return mesh
-    },
-    generateWindow (width, depth) {
-      const texture = THREE.ImageUtils.loadTexture('/img/glass.jpg')
-      texture.wrapS = THREE.RepeatWrapping
-      texture.wrapT = THREE.RepeatWrapping
-      texture.repeat.set(3, 1)
-      texture.rotation = Math.PI / 2
 
-      const geometry = new THREE.PlaneGeometry(width, depth)
-      const material = new THREE.MeshLambertMaterial(
-        {
-          map: texture,
-          side: THREE.DoubleSide
-        }
-      )
-      material.transparent = true
-      material.opacity = 0.5
+      material.transparent = opacity !== 1
+      material.opacity = opacity
+
       const mesh = new THREE.Mesh(geometry, material)
       mesh.receiveShadow = true
+      mesh.rotation.x = rotateX
+      mesh.rotation.z = rotateZ
+      mesh.rotation.y = rotateY
       return mesh
     },
     generateCube (width, height, depth) {
