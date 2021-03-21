@@ -30,21 +30,17 @@ export default {
 
     const backWall = this.generateWall(5, 20, 2, 1, Math.PI, Math.PI / 2, Math.PI)
     backWall.position.x = -5
-    backWall.position.z = -2.5
 
     const windowWall = this.generateWall(5, 20, 3, 1, Math.PI / 2, Math.PI / 2, Math.PI / 2, '/img/glass.jpg', 0.3)
     windowWall.position.x = 5
-    windowWall.position.z = -2.5
 
     const leftWall = this.generateWall(5, 10, 1, 1)
     leftWall.position.x = 0
     leftWall.position.y = 10
-    leftWall.position.z = -2.5
 
     const rightWall = this.generateWall(5, 10, 1, 1)
     rightWall.position.x = 0
     rightWall.position.y = -10
-    rightWall.position.z = -2.5
 
     const geometry = new THREE.BoxGeometry(3, 5, 0.2)
     const material = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture('/img/chalkboard.jpg') })
@@ -156,6 +152,7 @@ export default {
       mesh.rotation.x = rotateX
       mesh.rotation.z = rotateZ
       mesh.rotation.y = rotateY
+      mesh.position.z = -2.5
       return mesh
     },
     generateCube (width, height, depth) {
