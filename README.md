@@ -1,4 +1,4 @@
-# three.js
+# A simple three.js demo site
 
 ## Project setup
 ```
