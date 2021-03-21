@@ -5,6 +5,7 @@
 <script>
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import THREEx from '@/plugins/threex.keyboardstate'
 
 export default {
@@ -51,6 +52,20 @@ export default {
     chalkboard.castShadow = true
     backWall.add(chalkboard)
 
+    new GLTFLoader().load(
+      '/models/table.glb',
+      function (gltf) {
+        gltf.scene.position.y = 0.11
+        gltf.scene.children[0].children.forEach((c) => {
+          c.castShadow = true
+        })
+        scene.add(gltf.scene)
+      },
+      function (error) {
+        console.error(error)
+      }
+    )
+
     floor.add(backWall)
     floor.add(windowWall)
     floor.add(leftWall)
@@ -59,7 +74,7 @@ export default {
     scene.add(floor)
 
     const light = this.generatePointLight(0xffffff, 1)
-    light.position.y = 5
+    light.position.y = 15
     light.position.x = 15
     scene.add(light)
 
