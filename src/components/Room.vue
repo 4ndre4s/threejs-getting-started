@@ -33,6 +33,7 @@ export default {
 
     const windowWall = this.generateWall(5, 20, 3, 1, Math.PI / 2, Math.PI / 2, Math.PI / 2, '/img/glass.jpg', 0.3)
     windowWall.position.x = 5
+    windowWall.visible = false
 
     const leftWall = this.generateWall(5, 10, 1, 1)
     leftWall.position.x = 0
@@ -49,22 +50,65 @@ export default {
     chalkboard.castShadow = true
     backWall.add(chalkboard)
 
-    new GLTFLoader().load(
-      '/models/table.glb',
-      function (gltf) {
-        gltf.scene.position.y = 0.11
-        gltf.scene.children[0].children.forEach((c) => {
-          c.castShadow = true
+    let tableScene
+    this.loadModel('/models/table.glb', (model) => {
+      tableScene = model.scene
+      tableScene.position.y = 0.11
+      tableScene.children[0].children.forEach((c) => {
+        c.castShadow = true
+      })
+      scene.add(tableScene)
+      for (let i = 0; i < 15; i++) {
+        this.loadModel('/models/card.glb', (model) => {
+          const card1 = Object.assign({}, model)
+          card1.scene.position.y = 2.1 + (0.02 * i)
+          card1.scene.position.z = -2
+          card1.scene.rotation.y = Math.PI / 2
+          tableScene.add(card1.scene)
         })
-        scene.add(gltf.scene)
-      },
-      function (error) {
-        console.error(error)
       }
-    )
+      this.loadModel('/models/card.glb', (model) => {
+        const card1 = model
+
+        const texture = THREE.ImageUtils.loadTexture('/img/grass.jpg')
+
+        texture.wrapS = THREE.RepeatWrapping
+        texture.wrapT = THREE.RepeatWrapping
+        texture.repeat.set(1, 1)
+
+        const material = new THREE.MeshLambertMaterial({ map: texture })
+        material.side = THREE.DoubleSide
+        const geometry = card1.scene.getObjectByName('Cube').geometry
+        const mesh = new THREE.Mesh(geometry, material)
+        mesh.position.y = 2.1
+        mesh.position.z = 0.5
+        mesh.rotation.y = Math.PI / 2
+        mesh.name = 'animatedCard'
+
+        tableScene.add(mesh)
+      })
+      this.loadModel('/models/card.glb', (model) => {
+        model.scene.position.y = 2.1
+        model.scene.position.z = 0.0
+        model.scene.rotation.y = Math.PI / 2
+        tableScene.add(model.scene)
+      })
+      this.loadModel('/models/card.glb', (model) => {
+        model.scene.position.y = 2.1
+        model.scene.position.z = -0.5
+        model.scene.rotation.y = Math.PI / 2
+        tableScene.add(model.scene)
+      })
+      this.loadModel('/models/card.glb', (model) => {
+        model.scene.position.y = 2.1
+        model.scene.position.z = 1
+        model.scene.rotation.y = Math.PI / 2
+        tableScene.add(model.scene)
+      })
+    })
 
     const spotLight = new THREE.SpotLight(0xfff5aa)
-    spotLight.position.set(0, 5, 0)
+    spotLight.position.set(2, 5, 0)
     scene.add(spotLight)
 
     floor.add(backWall)
@@ -98,14 +142,30 @@ export default {
         this.update(renderer, scene, camera, controls)
       })
     },
+    loadModel (path, resolve, reject) {
+      new GLTFLoader().load(
+        path,
+        function (model) {
+          resolve(model)
+        },
+        null,
+        function (error) {
+          if (!reject) {
+            console.error(error)
+            return
+          }
+          reject(error)
+        }
+      )
+    },
     generatePointLight (color, intensity) {
       const light = new THREE.PointLight(color, intensity)
       light.castShadow = true
       return light
     },
     setupCamera () {
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
-      camera.position.x = 20
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
+      camera.position.x = 3
       camera.position.y = 10
       camera.position.z = 0
       camera.lookAt(new THREE.Vector3(0, 0, -5))
@@ -163,7 +223,7 @@ export default {
       return mesh
     },
     setupRenderer () {
-      const renderer = new THREE.WebGLRenderer()
+      const renderer = new THREE.WebGLRenderer({ antialias: true })
       renderer.shadowMap.enabled = true
       renderer.setSize(window.innerWidth, window.innerHeight)
       renderer.setClearColor('rgb(80,80,80)')
