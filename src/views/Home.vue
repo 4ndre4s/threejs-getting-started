@@ -174,22 +174,22 @@ export default {
       const cube = scene.getObjectByName('cube')
 
       if (this.keyboard.pressed('o')) {
-        if (cube.position.x > -5) {
+        if (cube.position.x > -4.25) {
           cube.translateX(-step)
         }
       }
       if (this.keyboard.pressed('u')) {
-        if (cube.position.x < 5) {
+        if (cube.position.x < 4.25) {
           cube.translateX(step)
         }
       }
       if (this.keyboard.pressed('a')) {
-        if (cube.position.y < 10) {
+        if (cube.position.y < 9.25) {
           cube.translateY(step)
         }
       }
       if (this.keyboard.pressed('e')) {
-        if (cube.position.y > -10) {
+        if (cube.position.y > -9.25) {
           cube.translateY(-step)
         }
       }
