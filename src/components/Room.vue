@@ -33,7 +33,6 @@ export default {
 
     const windowWall = this.generateWall(5, 20, 3, 1, Math.PI / 2, Math.PI / 2, Math.PI / 2, '/img/glass.jpg', 0.3)
     windowWall.position.x = 5
-    windowWall.visible = false
 
     const leftWall = this.generateWall(5, 10, 1, 1)
     leftWall.position.x = 0
@@ -164,9 +163,9 @@ export default {
       return light
     },
     setupCamera () {
-      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
-      camera.position.x = 3
-      camera.position.y = 10
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
+      camera.position.x = 20
+      camera.position.y = 15
       camera.position.z = 0
       camera.lookAt(new THREE.Vector3(0, 0, -5))
       return camera
