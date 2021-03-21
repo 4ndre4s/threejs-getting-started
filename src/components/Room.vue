@@ -90,7 +90,7 @@ export default {
       return camera
     },
     generateFloor (width, depth) {
-      const texture = THREE.ImageUtils.loadTexture('/img/parkett.jpg')
+      const texture = THREE.ImageUtils.loadTexture('/img/parquet.jpg')
       texture.wrapS = THREE.RepeatWrapping
       texture.wrapT = THREE.RepeatWrapping
       texture.repeat.set(2, 1)
