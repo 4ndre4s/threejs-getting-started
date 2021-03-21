@@ -19,10 +19,10 @@ export default {
   mounted () {
     const scene = new THREE.Scene()
 
-    const cube = this.generateCube(1, 1, 1)
+    /* const cube = this.generateCube(1, 1, 1)
     cube.name = 'cube'
     cube.translateZ(-2)
-    cube.position.y = cube.geometry.parameters.height / 2
+    cube.position.y = cube.geometry.parameters.height / 2 */
 
     const floor = this.generateFloor(10, 20)
     floor.name = 'floor'
@@ -63,7 +63,7 @@ export default {
       }
     )
 
-    const spotLight = new THREE.SpotLight(0xffffff)
+    const spotLight = new THREE.SpotLight(0xfff5aa)
     spotLight.position.set(0, 5, 0)
     scene.add(spotLight)
 
@@ -71,7 +71,7 @@ export default {
     floor.add(windowWall)
     floor.add(leftWall)
     floor.add(rightWall)
-    floor.add(cube)
+    // floor.add(cube)
     scene.add(floor)
 
     const light = this.generatePointLight(0xffffff, 1)
