@@ -67,6 +67,10 @@ export default {
       }
     )
 
+    const spotLight = new THREE.SpotLight(0xffffff)
+    spotLight.position.set(0, 5, 0)
+    scene.add(spotLight)
+
     floor.add(backWall)
     floor.add(windowWall)
     floor.add(leftWall)
