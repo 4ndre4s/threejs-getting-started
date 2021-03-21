@@ -49,6 +49,7 @@ export default {
     const geometry = new THREE.BoxGeometry(3, 5, 0.2)
     const material = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture('/img/chalkboard.jpg') })
     const chalkboard = new THREE.Mesh(geometry, material)
+    chalkboard.position.y = -5
     chalkboard.castShadow = true
     backWall.add(chalkboard)
 
