@@ -81,19 +81,7 @@ export default {
       controls.update()
 
       const step = 10 * this.clock.getDelta()
-      const cube = scene.getObjectByName('cube')
-      if (this.keyboard.pressed('o')) {
-        cube.translateX(-step)
-      }
-      if (this.keyboard.pressed('u')) {
-        cube.translateX(step)
-      }
-      if (this.keyboard.pressed('a')) {
-        cube.translateY(step)
-      }
-      if (this.keyboard.pressed('e')) {
-        cube.translateY(-step)
-      }
+      this.handleKeyPresses(step, scene)
 
       requestAnimationFrame(() => {
         this.update(renderer, scene, camera, controls)
@@ -181,6 +169,30 @@ export default {
       renderer.setSize(window.innerWidth, window.innerHeight)
       renderer.setClearColor('rgb(80,80,80)')
       return renderer
+    },
+    handleKeyPresses (step, scene) {
+      const cube = scene.getObjectByName('cube')
+
+      if (this.keyboard.pressed('o')) {
+        if (cube.position.x > -5) {
+          cube.translateX(-step)
+        }
+      }
+      if (this.keyboard.pressed('u')) {
+        if (cube.position.x < 5) {
+          cube.translateX(step)
+        }
+      }
+      if (this.keyboard.pressed('a')) {
+        if (cube.position.y < 10) {
+          cube.translateY(step)
+        }
+      }
+      if (this.keyboard.pressed('e')) {
+        if (cube.position.y > -10) {
+          cube.translateY(-step)
+        }
+      }
     }
   }
 }
