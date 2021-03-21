@@ -7,6 +7,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import THREEx from '@/plugins/threex.keyboardstate'
+import DomEvents from '@/plugins/threex.domevents'
 
 export default {
   name: 'Room',
@@ -48,6 +49,27 @@ export default {
     chalkboard.position.y = -5
     chalkboard.castShadow = true
     backWall.add(chalkboard)
+
+    const spotLight = new THREE.SpotLight(0xfff5aa)
+    spotLight.position.set(2, 5, 0)
+    scene.add(spotLight)
+
+    this.loadModel('/models/light-switch.glb', (model) => {
+      const { scene } = model
+      scene.position.y = -9
+      scene.rotation.x = Math.PI / 2
+      scene.rotation.z = Math.PI / 2
+      scene.scale.x = 0.25
+      scene.scale.y = 0.25
+      scene.scale.z = 0.25
+
+      const domEvents = new DomEvents(camera, renderer.domElement)
+      domEvents.addEventListener(scene, 'click', function (event) {
+        spotLight.visible = !spotLight.visible
+      })
+
+      backWall.add(scene)
+    })
 
     let tableScene
     this.loadModel('/models/table.glb', (model) => {
@@ -105,10 +127,6 @@ export default {
         tableScene.add(model.scene)
       })
     })
-
-    const spotLight = new THREE.SpotLight(0xfff5aa)
-    spotLight.position.set(2, 5, 0)
-    scene.add(spotLight)
 
     floor.add(backWall)
     floor.add(windowWall)
